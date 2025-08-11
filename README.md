@@ -26,6 +26,8 @@ The core logic resides within the FastAPI server. Here is a detailed breakdown o
 - **Extensible Knowledge Base**: Includes a utility script (ingest_document.py) to automatically process and add new knowledge from PDF documents into the vector database.
 
 # 📂 Project Structure
+
+<pre>
 my_ai_pipe/
 ├── components/
 │   └── UI/
@@ -64,6 +66,9 @@ my_ai_pipe/
 │
 ├── .env
 └── requirements.txt
+</pre>
+
+
 # 🚀 Setup and Installation
 
 Follow these steps to set up and run the project locally.
