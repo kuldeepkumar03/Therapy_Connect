@@ -119,30 +119,31 @@ python ingest_document.py "path/to/your/document.pdf"
 
 
 # ▶️ How to Run
-Start the Backend Server:
+1. Start the Backend Server:
 
-Navigate to the services/ directory.
+  - Navigate to the services/ directory.
 
-Run the following command in your terminal:
+  - Run the following command in your terminal:
 
-uvicorn main_app:app --reload
+    - uvicorn main_app:app --reload
+
+  - The server will start on http://127.0.0.1:8000.
 
 
-The server will start on http://127.0.0.1:8000.
+2. Open the Frontend:
 
-Open the Frontend:
-
-Navigate to the root directory of the project.
-
-Open the index.html file in your web browser.
+  - Navigate to the root directory of the project.
+  
+  - Open the index.html file in your web browser.
 
 The application is now ready to use!
 
 # 🔮 Future Scope
-User Authentication: Implement a user login system to save and track session history securely.
 
-Analytics Dashboard: Develop a dashboard to visualize emotional trends and session data over time.
+- **User Authentication**: Implement a user login system to save and track session history securely.
 
-Streaming Audio: Upgrade from file uploads to real-time streaming audio transcription for a more fluid user experience.
+- **Analytics Dashboard**: Develop a dashboard to visualize emotional trends and session data over time.
 
-Cloud Deployment: Deploy the entire application to a cloud platform like Google Cloud Run or AWS for public access.
+- **Streaming Audio**: Upgrade from file uploads to real-time streaming audio transcription for a more fluid user experience.
+
+- **Cloud Deployment**: Deploy the entire application to a cloud platform like Google Cloud Run or AWS for public access.
