@@ -6,22 +6,21 @@ Think Connect is an AI-powered interactive therapeutic assistant designed to pro
 
 The application operates on a client-server model, with a dynamic web interface communicating with a unified Python backend that houses the entire AI pipeline.
 
-graph TD
-    A[User's Browser <br> (index.html)] -- 1. Records Audio --> B{FastAPI Server <br> (main_app.py)};
-    B -- 2. Transcribes & Analyzes --> C[AI Pipeline];
-    C -- 3. Generates Questions --> B;
-    B -- 4. Sends Questions --> A;
-    A -- 5. User Answers Questions --> B;
-    B -- 6. Generates Summary --> C;
-    C -- 7. Provides Final Text --> B;
-    B -- 8. Sends Summary --> A;
-    A -- 9. Displays Summary & PDF Option --> A;
+# 🌊 Data Flow Diagram
 
-    subgraph C [AI Pipeline Services]
-        C1[Whisper <br> Speech-to-Text]
-        C2[BiLSTM Model <br> Emotion Classification]
-        C3[RAG System <br> (SentenceTransformer + ChromaDB)]
-        C4[Gemini Pro <br> LLM Generation]
-    end
+The core logic resides within the FastAPI server. Here is a detailed breakdown of how data flows through the AI services during a user session.
 
-    style C fill:#262626,stroke:#8b5cf6,stroke-width:2px
+# ✨ Key Features
+- End-to-End AI Pipeline: A complete system processing raw audio through transcription, emotion analysis, and context-aware response generation.
+
+- Intelligent RAG System: Utilizes Retrieval-Augmented Generation with a ChromaDB vector database to ground the LLM's responses in a specialized knowledge base, ensuring accuracy and relevance.
+
+- Dynamic Conversational AI: Engages users in an interactive dialogue by generating clarifying questions based on their initial statement and emotional state.
+
+- Nuanced Emotion Analysis: A custom BiLSTM model identifies both primary and secondary emotions for a deeper understanding of the user's state.
+
+- Interactive Web Interface: A modern, responsive frontend built with HTML, Tailwind CSS, and JavaScript, featuring real-time audio visualization and dynamic state management.
+
+- Downloadable Summaries: Users can download a complete summary of their session, including their responses and the AI's analysis, as a formatted PDF.
+
+- Extensible Knowledge Base: Includes a utility script (ingest_document.py) to automatically process and add new knowledge from PDF documents into the vector database.
