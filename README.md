@@ -6,11 +6,14 @@ Therapy Connect is an AI-powered interactive therapeutic assistant designed to p
 
 The application operates on a client-server model, with a dynamic web interface communicating with a unified Python backend that houses the entire AI pipeline.
 
-![Therapy Connect Data Flow](./therapy-connect-flow.png)
+
 
 # 🌊 Data Flow Diagram
 
 The core logic resides within the FastAPI server. Here is a detailed breakdown of how data flows through the AI services during a user session.
+
+![Therapy Connect Data Flow](./therapy-connect-flow.png)
+
 
 # ✨ Key Features
 - **End-to-End AI Pipeline**: A complete system processing raw audio through transcription, emotion analysis, and context-aware response generation.
