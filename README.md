@@ -13,17 +13,17 @@ The core logic resides within the FastAPI server. Here is a detailed breakdown o
 # ✨ Key Features
 - **End-to-End AI Pipeline**: A complete system processing raw audio through transcription, emotion analysis, and context-aware response generation.
 
-- Intelligent RAG System: Utilizes Retrieval-Augmented Generation with a ChromaDB vector database to ground the LLM's responses in a specialized knowledge base, ensuring accuracy and relevance.
+- **Intelligent RAG System**: Utilizes Retrieval-Augmented Generation with a ChromaDB vector database to ground the LLM's responses in a specialized knowledge base, ensuring accuracy and relevance.
 
-- Dynamic Conversational AI: Engages users in an interactive dialogue by generating clarifying questions based on their initial statement and emotional state.
+- **Dynamic Conversational AI**: Engages users in an interactive dialogue by generating clarifying questions based on their initial statement and emotional state.
 
-- Nuanced Emotion Analysis: A custom BiLSTM model identifies both primary and secondary emotions for a deeper understanding of the user's state.
+- **Nuanced Emotion Analysis**: A custom BiLSTM model identifies both primary and secondary emotions for a deeper understanding of the user's state.
 
-- Interactive Web Interface: A modern, responsive frontend built with HTML, Tailwind CSS, and JavaScript, featuring real-time audio visualization and dynamic state management.
+- **Interactive Web Interface**: A modern, responsive frontend built with HTML, Tailwind CSS, and JavaScript, featuring real-time audio visualization and dynamic state management.
 
-- Downloadable Summaries: Users can download a complete summary of their session, including their responses and the AI's analysis, as a formatted PDF.
+- **Downloadable Summaries**: Users can download a complete summary of their session, including their responses and the AI's analysis, as a formatted PDF.
 
-- Extensible Knowledge Base: Includes a utility script (ingest_document.py) to automatically process and add new knowledge from PDF documents into the vector database.
+- **Extensible Knowledge Base**: Includes a utility script (ingest_document.py) to automatically process and add new knowledge from PDF documents into the vector database.
 
 # 📂 Project Structure
 
