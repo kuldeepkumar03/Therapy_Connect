@@ -11,7 +11,7 @@ The application operates on a client-server model, with a dynamic web interface 
 The core logic resides within the FastAPI server. Here is a detailed breakdown of how data flows through the AI services during a user session.
 
 # ✨ Key Features
-- End-to-End AI Pipeline: A complete system processing raw audio through transcription, emotion analysis, and context-aware response generation.
+- **End-to-End AI Pipeline**: A complete system processing raw audio through transcription, emotion analysis, and context-aware response generation.
 
 - Intelligent RAG System: Utilizes Retrieval-Augmented Generation with a ChromaDB vector database to ground the LLM's responses in a specialized knowledge base, ensuring accuracy and relevance.
 
