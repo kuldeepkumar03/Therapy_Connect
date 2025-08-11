@@ -6,6 +6,8 @@ Think Connect is an AI-powered interactive therapeutic assistant designed to pro
 
 The application operates on a client-server model, with a dynamic web interface communicating with a unified Python backend that houses the entire AI pipeline.
 
+![Think Connect Data Flow](./think-connect-flow.png)
+
 # 🌊 Data Flow Diagram
 
 The core logic resides within the FastAPI server. Here is a detailed breakdown of how data flows through the AI services during a user session.
