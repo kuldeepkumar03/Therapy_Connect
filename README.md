@@ -26,7 +26,44 @@ The core logic resides within the FastAPI server. Here is a detailed breakdown o
 - **Extensible Knowledge Base**: Includes a utility script (ingest_document.py) to automatically process and add new knowledge from PDF documents into the vector database.
 
 # 📂 Project Structure
-
+my_ai_pipe/
+├── components/
+│   └── UI/
+│       └── chart.js
+│
+├── data/
+│   └── knowledge_base_db/
+│
+├── dev files/
+│   ├── asset/
+│   │   ├── CSS/
+│   │   │   └── style.css
+│   │   └── JavaScript/
+│   │       ├── analytics.js
+│   │       ├── app.js
+│   │       ├── history.js
+│   │       └── settings.js
+│   ├── template/
+│   │   └── (empty)
+│   ├── analytics.html
+│   ├── history.html
+│   ├── index.html
+│   └── setting.html
+│
+├── models/
+│   ├── BiLSTM_model.h5
+│   └── final_tokenizer.pkl
+│
+├── pipeline_io/
+│   └── audio_uploads/
+│
+├── services/
+│   ├── main_app.py
+│   ├── emotion_service.py
+│   └── rag_service.py
+│
+├── .env
+└── requirements.txt
 # 🚀 Setup and Installation
 
 Follow these steps to set up and run the project locally.
