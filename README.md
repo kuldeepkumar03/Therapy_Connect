@@ -75,48 +75,48 @@ Follow these steps to set up and run the project locally.
 
 ## Prerequisites
 
-Python 3.9+
+- Python 3.9+
 
-FFmpeg: Whisper requires FFmpeg to be installed on your system and accessible from the command line. You can download it from ffmpeg.org.
+- FFmpeg: Whisper requires FFmpeg to be installed on your system and accessible from the command line. You can download it from ffmpeg.org.
 
-Google API Key: You need a Google API key with the "Generative Language API" enabled to use Gemini Pro.
+- Google API Key: You need a Google API key with the "Generative Language API" enabled to use Gemini Pro.
 
 ## Installation Steps
 
-Clone the repository:
+- Clone the repository:
 
-git clone [your-repository-url]
-cd My_AI_Pipeline
-
-
-Create a virtual environment:
-
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+  - git clone [your-repository-url]
+  - cd My_AI_Pipeline
 
 
-Install dependencies:
+- Create a virtual environment:
 
-pip install -r requirements.txt
-
-
-Set up your environment variables:
-
-Create a file named .env in the root directory of the project.
-
-Add your Google API key to this file:
-
-GOOGLE_API_KEY="your_google_api_key_here"
+  - python -m venv venv
+  - source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 
-Build the Knowledge Base (Optional but Recommended):
+- Install dependencies:
 
-You can expand the knowledge base by adding your own PDF documents. Place the ingest_document.py script in the root directory.
+  - pip install -r requirements.txt
 
-Run the script from your terminal, providing the path to a PDF:
 
-python ingest_document.py "path/to/your/document.pdf"
+- Set up your environment variables:
 
+  - Create a file named .env in the root directory of the project.
+
+  - Add your Google API key to this file:
+
+    - GOOGLE_API_KEY="your_google_api_key_here"
+
+
+- Build the Knowledge Base (Optional but Recommended):
+
+  - You can expand the knowledge base by adding your own PDF documents. Place the ingest_document.py script in the root directory.
+
+  - Run the script from your terminal, providing the path to a PDF:
+
+    - python ingest_document.py "path/to/your/document.pdf"
+  
 
 # ▶️ How to Run
 1. Start the Backend Server:
