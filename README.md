@@ -25,3 +25,82 @@ The core logic resides within the FastAPI server. Here is a detailed breakdown o
 
 - Extensible Knowledge Base: Includes a utility script (ingest_document.py) to automatically process and add new knowledge from PDF documents into the vector database.
 
+# 📂 Project Structure
+
+# 🚀 Setup and Installation
+
+Follow these steps to set up and run the project locally.
+
+## Prerequisites
+
+Python 3.9+
+
+FFmpeg: Whisper requires FFmpeg to be installed on your system and accessible from the command line. You can download it from ffmpeg.org.
+
+Google API Key: You need a Google API key with the "Generative Language API" enabled to use Gemini Pro.
+
+## Installation Steps
+
+Clone the repository:
+
+git clone [your-repository-url]
+cd My_AI_Pipeline
+
+
+Create a virtual environment:
+
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+
+Install dependencies:
+
+pip install -r requirements.txt
+
+
+Set up your environment variables:
+
+Create a file named .env in the root directory of the project.
+
+Add your Google API key to this file:
+
+GOOGLE_API_KEY="your_google_api_key_here"
+
+
+Build the Knowledge Base (Optional but Recommended):
+
+You can expand the knowledge base by adding your own PDF documents. Place the ingest_document.py script in the root directory.
+
+Run the script from your terminal, providing the path to a PDF:
+
+python ingest_document.py "path/to/your/document.pdf"
+
+
+# ▶️ How to Run
+Start the Backend Server:
+
+Navigate to the services/ directory.
+
+Run the following command in your terminal:
+
+uvicorn main_app:app --reload
+
+
+The server will start on http://127.0.0.1:8000.
+
+Open the Frontend:
+
+Navigate to the root directory of the project.
+
+Open the index.html file in your web browser.
+
+The application is now ready to use!
+
+# 🔮 Future Scope
+User Authentication: Implement a user login system to save and track session history securely.
+
+Analytics Dashboard: Develop a dashboard to visualize emotional trends and session data over time.
+
+Streaming Audio: Upgrade from file uploads to real-time streaming audio transcription for a more fluid user experience.
+
+Cloud Deployment: Deploy the entire application to a cloud platform like Google Cloud Run or AWS for public access.
