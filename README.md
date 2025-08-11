@@ -24,3 +24,4 @@ The core logic resides within the FastAPI server. Here is a detailed breakdown o
 - Downloadable Summaries: Users can download a complete summary of their session, including their responses and the AI's analysis, as a formatted PDF.
 
 - Extensible Knowledge Base: Includes a utility script (ingest_document.py) to automatically process and add new knowledge from PDF documents into the vector database.
+
