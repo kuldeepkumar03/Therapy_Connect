@@ -25,9 +25,7 @@ The core logic resides within the FastAPI server. Here is a detailed breakdown o
 
 - **Interactive Web Interface**: A modern, responsive frontend built with HTML, Tailwind CSS, and JavaScript, featuring real-time audio visualization and dynamic state management.
 
-- **Downloadable Summaries**: Users can download a complete summary of their session, including their responses and the AI's analysis, as a formatted PDF.
-
-- **Extensible Knowledge Base**: Includes a utility script (ingest_document.py) to automatically process and add new knowledge from PDF documents into the vector database.
+- **Downloadable Summaries**: Users can download a complete summary of their session, including their responses and the AI's analysis, as a formatted JSON.
 
 # 📂 Project Structure
 
@@ -111,15 +109,6 @@ Follow these steps to set up and run the project locally.
   - Add your Google API key to this file:
 
     - GOOGLE_API_KEY="your_google_api_key_here"
-
-
-- Build the Knowledge Base (Optional but Recommended):
-
-  - You can expand the knowledge base by adding your own PDF documents. Place the ingest_document.py script in the root directory.
-
-  - Run the script from your terminal, providing the path to a PDF:
-
-    - python ingest_document.py "path/to/your/document.pdf"
   
 
 # ▶️ How to Run
