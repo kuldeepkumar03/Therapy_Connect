@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Settings - Therapy Connect Pro</title>
+    <link rel="stylesheet" href="assets\css\styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+    <div class="aurora-background">
+        <div class="aurora-outer">
+            <div class="aurora-inner"></div>
+            <div class="aurora-inner"></div>
+            <div class="aurora-inner"></div>
+            <div class="aurora-inner"></div>
+            <div class="aurora-inner"></div>
+        </div>
+    </div>
+    
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar fixed left-0 top-0 h-full w-80 z-50 p-6">
+        <div class="flex items-center justify-between mb-8">
+            <h2 class="text-xl font-bold text-white">Session Control</h2>
+            <button id="sidebar-close" class="p-2 rounded-lg hover:bg-white/10 transition-colors">
+                <i data-feather="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+        
+        <!-- Navigation -->
+        <nav class="mb-8">
+            <div class="nav-item" data-page="index.html">
+                <i data-feather="mic" class="w-5 h-5 mr-3"></i>
+                <span>Current Session</span>
+            </div>
+            <div class="nav-item" data-page="history.html">
+                <i data-feather="clock" class="w-5 h-5 mr-3"></i>
+                <span>Session History</span>
+            </div>
+            <div class="nav-item" data-page="analytics.html">
+                <i data-feather="bar-chart-2" class="w-5 h-5 mr-3"></i>
+                <span>Analytics</span>
+            </div>
+            <div class="nav-item active" data-page="settings.html">
+                <i data-feather="settings" class="w-5 h-5 mr-3"></i>
+                <span>Settings</span>
+            </div>
+        </nav>
+        
+        <!-- Quick Settings -->
+        <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-white mb-4">Quick Settings</h3>
+            
+            <div class="stat-card">
+                <div class="flex items-center justify-between">
+                    <span class="text-gray-300">Auto Save</span>
+                    <label class="switch">
+                        <input type="checkbox" id="auto-save-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="flex items-center justify-between">
+                    <span class="text-gray-300">Notifications</span>
+                    <label class="switch">
+                        <input type="checkbox" id="notifications-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="flex items-center justify-between">
+                    <span class="text-gray-300">Storage Used</span>
+                    <span id="storage-used" class="text-violet-300 font-bold">0 MB</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div id="main-content" class="transition-all duration-300 ml-80 min-h-screen p-4 py-16 sm:py-20">
+        <!-- Top Bar -->
+        <div class="w-full max-w-4xl mx-auto mb-8">
+            <div class="glass-card rounded-2xl p-4 flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <button id="sidebar-open" class="p-2 rounded-lg hover:bg-white/10 transition-colors">
+                        <i data-feather="chevron-right" class="w-5 h-5"></i>
+                    </button>
+                    <h1 class="text-2xl font-bold text-white">Settings</h1>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Settings Content -->
+        <div class="w-full max-w-4xl mx-auto space-y-8">
+            
+            <!-- Appearance Settings -->
+            <div class="glass-card rounded-2xl p-6">
+                <h2 class="text-xl font-semibold text-white mb-6 flex items-center">
+                    <i data-feather="palette" class="w-5 h-5 mr-3"></i>
+                    Appearance
+                </h2>
+                
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-4">Theme</label>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="theme-option active" data-theme="default">
+                                <div class="theme-preview bg-gradient-to-br from-violet-500 to-purple-600"></div>
+                                <span class="theme-name">Default</span>
+                            </div>
+                            <div class="theme-option" data-theme="blue">
+                                <div class="theme-preview bg-gradient-to-br from-blue-500 to-blue-700"></div>
+                                <span class="theme-name">Ocean</span>
+                            </div>
+                            <div class="theme-option" data-theme="green">
+                                <div class="theme-preview bg-gradient-to-br from-green-500 to-emerald-600"></div>
+                                <span class="theme-name">Forest</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="animation-speed" class="block text-sm font-medium text-gray-300 mb-2">Animation Speed</label>
+                        <div class="flex items-center space-x-4">
+                            <span class="text-sm text-gray-400">Slow</span>
+                            <input type="range" id="animation-speed" min="1" max="5" value="3" class="flex-1">
+                            <span class="text-sm text-gray-400">Fast</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Session Settings -->
+            <div class="glass-card rounded-2xl p-6">
+                <h2 class="text-xl font-semibold text-white mb-6 flex items-center">
+                    <i data-feather="mic" class="w-5 h-5 mr-3"></i>
+                    Session Settings
+                </h2>
+                
+                <div class="space-y-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <label class="text-sm font-medium text-gray-300">Auto Save Sessions</label>
+                            <p class="text-xs text-gray-400 mt-1">Automatically save completed sessions</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="auto-save" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <label class="text-sm font-medium text-gray-300">Session Reminders</label>
+                            <p class="text-xs text-gray-400 mt-1">Get notified about regular sessions</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="reminders">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div>
+                        <label for="mic-sensitivity" class="block text-sm font-medium text-gray-300 mb-2">Microphone Sensitivity</label>
+                        <div class="flex items-center space-x-4">
+                            <span class="text-sm text-gray-400">Low</span>
+                            <input type="range" id="mic-sensitivity" min="1" max="10" value="5" class="flex-1">
+                            <span class="text-sm text-gray-400">High</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Privacy & Data -->
+            <div class="glass-card rounded-2xl p-6">
+                <h2 class="text-xl font-semibold text-white mb-6 flex items-center">
+                    <i data-feather="shield" class="w-5 h-5 mr-3"></i>
+                    Privacy & Data
+                </h2>
+                
+                <div class="space-y-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <label class="text-sm font-medium text-gray-300">Local Storage Only</label>
+                            <p class="text-xs text-gray-400 mt-1">Keep all data on your device</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="local-storage" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <label class="text-sm font-medium text-gray-300">Analytics Tracking</label>
+                            <p class="text-xs text-gray-400 mt-1">Help improve the app with usage data</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="analytics-tracking">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Accessibility -->
+            <div class="glass-card rounded-2xl p-6">
+                <h2 class="text-xl font-semibold text-white mb-6 flex items-center">
+                    <i data-feather="accessibility" class="w-5 h-5 mr-3"></i>
+                    Accessibility
+                </h2>
+                
+                <div class="space-y-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <label class="text-sm font-medium text-gray-300">Noise Reduction</label>
+                            <p class="text-xs text-gray-400 mt-1">Filter background noise during recording</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="noise-reduction" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <label class="text-sm font-medium text-gray-300">Reduced Motion</label>
+                            <p class="text-xs text-gray-400 mt-1">Minimize animations and transitions</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="reduced-motion">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Data Management -->
+            <div class="glass-card rounded-2xl p-6">
+                <h2 class="text-xl font-semibold text-white mb-6 flex items-center">
+                    <i data-feather="database" class="w-5 h-5 mr-3"></i>
+                    Data Management
+                </h2>
+                
+                <div class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <button id="export-all-data" class="settings-button">
+                            <i data-feather="download" class="w-5 h-5 mr-3"></i>
+                            Export All Data
+                        </button>
+                        <button id="import-data" class="settings-button">
+                            <i data-feather="upload" class="w-5 h-5 mr-3"></i>
+                            Import Data
+                        </button>
+                    </div>
+                    
+                    <div class="border-t border-white/10 pt-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <button id="reset-settings" class="settings-button-secondary">
+                                <i data-feather="refresh-cw" class="w-5 h-5 mr-3"></i>
+                                Reset Settings
+                            </button>
+                            <button id="clear-all-data" class="settings-button-danger">
+                                <i data-feather="trash-2" class="w-5 h-5 mr-3"></i>
+                                Clear All Data
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+document.addEventListener("DOMContentLoaded", () => {
+    const feather = window.feather;
+    feather.replace();
+
+    // Elements
+    const sidebar = document.getElementById("sidebar");
+    const mainContent = document.getElementById("main-content");
+    const sidebarToggle = document.getElementById("sidebar-toggle");
+    const sidebarOpen = document.getElementById("sidebar-open");
+    const sidebarClose = document.getElementById("sidebar-close");
+
+    let sidebarCollapsed = false;
+
+    // Initialize
+    initializeSettings();
+
+    function initializeSettings() {
+        loadSettings();
+        setupEventListeners();
+        updateStorageUsage();
+        updateMainContentMargins();
+    }
+
+    function setupEventListeners() {
+        if (sidebarClose) sidebarClose.addEventListener("click", closeSidebar);
+        if (sidebarOpen) sidebarOpen.addEventListener("click", openSidebar);
+
+        // Settings toggles
+        setupToggleListeners();
+        setupButtonListeners();
+        setupThemeSelection();
+        setupSliderListeners();
+
+        // Navigation
+        document.querySelectorAll(".nav-item").forEach((item) => {
+            item.addEventListener("click", () => {
+                const page = item.getAttribute("data-page");
+                if (page && page !== "settings.html") {
+                    window.location.href = page;
+                }
+            });
+        });
+    }
+
+    function setupToggleListeners() {
+        const toggles = [
+            "auto-save",
+            "reminders",
+            "local-storage",
+            "analytics-tracking",
+            "noise-reduction",
+            "reduced-motion",
+        ];
+
+        toggles.forEach((toggleId) => {
+            const toggle = document.getElementById(toggleId);
+            if (toggle) {
+                toggle.addEventListener("change", () => {
+                    saveSettings();
+                    showNotification(`${toggleId.replace("-", " ")} ${toggle.checked ? "enabled" : "disabled"}`, "info");
+                });
+            }
+        });
+
+        // Sidebar quick toggles
+        const autoSaveToggle = document.getElementById("auto-save-toggle");
+        const notificationsToggle = document.getElementById("notifications-toggle");
+
+        if (autoSaveToggle) {
+            autoSaveToggle.addEventListener("change", () => {
+                const mainToggle = document.getElementById("auto-save");
+                if (mainToggle) mainToggle.checked = autoSaveToggle.checked;
+                saveSettings();
+            });
+        }
+
+        if (notificationsToggle) {
+            notificationsToggle.addEventListener("change", () => {
+                const mainToggle = document.getElementById("reminders");
+                if (mainToggle) mainToggle.checked = notificationsToggle.checked;
+                saveSettings();
+            });
+        }
+    }
+
+    function setupButtonListeners() {
+        const resetSettingsBtn = document.getElementById("reset-settings");
+        const exportAllDataBtn = document.getElementById("export-all-data");
+        const importDataBtn = document.getElementById("import-data");
+        const clearAllDataBtn = document.getElementById("clear-all-data");
+
+        if (resetSettingsBtn) {
+            resetSettingsBtn.addEventListener("click", resetAllSettings);
+        }
+
+        if (exportAllDataBtn) {
+            exportAllDataBtn.addEventListener("click", exportAllData);
+        }
+
+        if (importDataBtn) {
+            importDataBtn.addEventListener("click", () => {
+                const input = document.createElement("input");
+                input.type = "file";
+                input.accept = ".json";
+                input.onchange = importData;
+                input.click();
+            });
+        }
+
+        if (clearAllDataBtn) {
+            clearAllDataBtn.addEventListener("click", clearAllData);
+        }
+    }
+
+    function setupThemeSelection() {
+        document.querySelectorAll(".theme-option").forEach((option) => {
+            option.addEventListener("click", () => {
+                document.querySelectorAll(".theme-option").forEach((opt) => opt.classList.remove("active"));
+                option.classList.add("active");
+
+                const theme = option.getAttribute("data-theme");
+                applyTheme(theme);
+                saveSettings();
+                showNotification(`${theme} theme applied`, "success");
+            });
+        });
+    }
+
+    function setupSliderListeners() {
+        const micSensitivity = document.getElementById("mic-sensitivity");
+        const animationSpeed = document.getElementById("animation-speed");
+
+        if (micSensitivity) {
+            micSensitivity.addEventListener("input", () => {
+                saveSettings();
+            });
+        }
+
+        if (animationSpeed) {
+            animationSpeed.addEventListener("input", () => {
+                const speed = animationSpeed.value;
+                document.documentElement.style.setProperty("--animation-speed", `${6 - speed}s`);
+                saveSettings();
+            });
+        }
+    }
+
+    function loadSettings() {
+        const settings = JSON.parse(localStorage.getItem("therapyConnectSettings") || "{}");
+
+        // Apply saved settings
+        Object.keys(settings).forEach((key) => {
+            const element = document.getElementById(key);
+            if (element) {
+                if (element.type === "checkbox") {
+                    element.checked = settings[key];
+                } else if (element.type === "range") {
+                    element.value = settings[key];
+                } else if (element.tagName === "SELECT") {
+                    element.value = settings[key];
+                }
+            }
+        });
+
+        // Apply theme
+        if (settings.theme) {
+            applyTheme(settings.theme);
+            document.querySelector(`[data-theme="${settings.theme}"]`)?.classList.add("active");
+        }
+
+        // Apply animation speed
+        if (settings["animation-speed"]) {
+            document.documentElement.style.setProperty("--animation-speed", `${6 - settings["animation-speed"]}s`);
+        }
+
+        // Sync sidebar toggles
+        const autoSaveToggle = document.getElementById("auto-save-toggle");
+        const notificationsToggle = document.getElementById("notifications-toggle");
+        
+        if (autoSaveToggle && settings["auto-save"] !== undefined) {
+            autoSaveToggle.checked = settings["auto-save"];
+        }
+        if (notificationsToggle && settings["reminders"] !== undefined) {
+            notificationsToggle.checked = settings["reminders"];
+        }
+    }
+
+    function saveSettings() {
+        const settings = {};
+
+        // Save all form inputs
+        const inputs = document.querySelectorAll("input, select");
+        inputs.forEach((input) => {
+            if (input.id) {
+                if (input.type === "checkbox") {
+                    settings[input.id] = input.checked;
+                } else if (input.type === "range") {
+                    settings[input.id] = input.value;
+                } else if (input.tagName === "SELECT") {
+                    settings[input.id] = input.value;
+                }
+            }
+        });
+
+        // Save active theme
+        const activeTheme = document.querySelector(".theme-option.active");
+        if (activeTheme) {
+            settings.theme = activeTheme.getAttribute("data-theme");
+        }
+
+        localStorage.setItem("therapyConnectSettings", JSON.stringify(settings));
+    }
+
+    function applyTheme(theme) {
+        const root = document.documentElement;
+
+        switch (theme) {
+            case "blue":
+                root.style.setProperty("--primary-gradient", "linear-gradient(135deg, #3b82f6 0%, #1e40af 100%)");
+                root.style.setProperty("--secondary-gradient", "linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)");
+                break;
+            case "green":
+                root.style.setProperty("--primary-gradient", "linear-gradient(135deg, #10b981 0%, #047857 100%)");
+                root.style.setProperty("--secondary-gradient", "linear-gradient(135deg, #34d399 0%, #059669 100%)");
+                break;
+            default:
+                root.style.setProperty("--primary-gradient", "linear-gradient(135deg, #667eea 0%, #764ba2 100%)");
+                root.style.setProperty("--secondary-gradient", "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)");
+        }
+    }
+
+    function resetAllSettings() {
+        if (confirm("Are you sure you want to reset all settings to default? This action cannot be undone.")) {
+            localStorage.removeItem("therapyConnectSettings");
+            location.reload();
+        }
+    }
+
+    function exportAllData() {
+        const allData = {
+            sessions: JSON.parse(localStorage.getItem("savedSessions") || "[]"),
+            settings: JSON.parse(localStorage.getItem("therapyConnectSettings") || "{}"),
+            stats: {
+                totalSessions: localStorage.getItem("totalSessions") || "0",
+                avgResponseTime: localStorage.getItem("avgResponseTime") || "--",
+            },
+        };
+
+        const dataStr = JSON.stringify(allData, null, 2);
+        const dataBlob = new Blob([dataStr], { type: "application/json" });
+
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(dataBlob);
+        link.download = `therapy-connect-complete-backup.json`;
+        link.click();
+
+        showNotification("Complete data backup exported successfully!", "success");
+    }
+
+    function importData(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const data = JSON.parse(e.target.result);
+
+                if (confirm("This will overwrite your current data. Are you sure you want to continue?")) {
+                    // Import sessions
+                    if (data.sessions) {
+                        localStorage.setItem("savedSessions", JSON.stringify(data.sessions));
+                    }
+
+                    // Import settings
+                    if (data.settings) {
+                        localStorage.setItem("therapyConnectSettings", JSON.stringify(data.settings));
+                    }
+
+                    // Import stats
+                    if (data.stats) {
+                        if (data.stats.totalSessions) {
+                            localStorage.setItem("totalSessions", data.stats.totalSessions);
+                        }
+                        if (data.stats.avgResponseTime) {
+                            localStorage.setItem("avgResponseTime", data.stats.avgResponseTime);
+                        }
+                    }
+
+                    showNotification("Data imported successfully! Reloading page...", "success");
+                    setTimeout(() => location.reload(), 2000);
+                }
+            } catch (error) {
+                showNotification("Invalid file format. Please select a valid backup file.", "error");
+            }
+        };
+        reader.readAsText(file);
+    }
+
+    function clearAllData() {
+        if (
+            confirm(
+                "Are you sure you want to clear ALL data? This includes sessions, settings, and statistics. This action cannot be undone.",
+            )
+        ) {
+            if (confirm("This is your final warning. All data will be permanently deleted. Continue?")) {
+                localStorage.clear();
+                showNotification("All data cleared successfully! Reloading page...", "info");
+                setTimeout(() => location.reload(), 2000);
+            }
+        }
+    }
+
+    function updateStorageUsage() {
+        const sessions = localStorage.getItem("savedSessions") || "[]";
+        const settings = localStorage.getItem("therapyConnectSettings") || "{}";
+        const stats = (localStorage.getItem("totalSessions") || "") + (localStorage.getItem("avgResponseTime") || "");
+
+        const totalSize = new Blob([sessions, settings, stats]).size;
+        const sizeInMB = (totalSize / (1024 * 1024)).toFixed(2);
+
+        const storageUsedEl = document.getElementById("storage-used");
+        if (storageUsedEl) {
+            storageUsedEl.textContent = `${sizeInMB} MB`;
+        }
+    }
+
+    // Sidebar controls
+    function closeSidebar() {
+        sidebarCollapsed = true;
+        sidebar.classList.add("sidebar-collapsed");
+        updateMainContentMargins();
+    }
+
+    function openSidebar() {
+        sidebarCollapsed = false;
+        sidebar.classList.remove("sidebar-collapsed");
+        updateMainContentMargins();
+    }
+
+    function updateMainContentMargins() {
+        const leftMargin = sidebarCollapsed ? "0" : "320px";
+        mainContent.style.marginLeft = leftMargin;
+    }
+
+    // Notification System
+    function showNotification(message, type = "info") {
+        const notification = document.createElement("div");
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+            <div class="flex items-center">
+                <i data-feather="${type === "success" ? "check-circle" : type === "error" ? "x-circle" : "info"}" class="w-5 h-5 mr-3"></i>
+                <span>${message}</span>
+            </div>
+        `;
+
+        document.body.appendChild(notification);
+        feather.replace();
+
+        setTimeout(() => notification.classList.add("show"), 100);
+
+        setTimeout(() => {
+            notification.classList.remove("show");
+            setTimeout(() => document.body.removeChild(notification), 300);
+        }, 3000);
+    }
+
+    // Mobile responsiveness
+    function handleResize() {
+        if (window.innerWidth < 768) {
+            sidebarCollapsed = true;
+            sidebar.classList.add("sidebar-collapsed");
+            updateMainContentMargins();
+        }
+    }
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Analytics - Therapy Connect Pro</title>
+    <link rel="stylesheet" href="assets\css\styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="aurora-background">
+        <div class="aurora-outer">
+            <div class="aurora-inner"></div>
+            <div class="aurora-inner"></div>
+            <div class="aurora-inner"></div>
+            <div class="aurora-inner"></div>
+            <div class="aurora-inner"></div>
+        </div>
+    </div>
+    
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar fixed left-0 top-0 h-full w-80 z-50 p-6">
+        <div class="flex items-center justify-between mb-8">
+            <h2 class="text-xl font-bold text-white">Session Control</h2>
+            <button id="sidebar-close" class="p-2 rounded-lg hover:bg-white/10 transition-colors">
+                <i data-feather="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+        
+        <!-- Navigation -->
+        <nav class="mb-8">
+            <div class="nav-item" data-page="index.html">
+                <i data-feather="mic" class="w-5 h-5 mr-3"></i>
+                <span>Current Session</span>
+            </div>
+            <div class="nav-item" data-page="history.html">
+                <i data-feather="clock" class="w-5 h-5 mr-3"></i>
+                <span>Session History</span>
+            </div>
+            <div class="nav-item active" data-page="analytics.html">
+                <i data-feather="bar-chart-2" class="w-5 h-5 mr-3"></i>
+                <span>Analytics</span>
+            </div>
+            <div class="nav-item" data-page="settings.html">
+                <i data-feather="settings" class="w-5 h-5 mr-3"></i>
+                <span>Settings</span>
+            </div>
+        </nav>
+        
+        <!-- Analytics Summary -->
+        <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-white mb-4">Quick Stats</h3>
+            
+            <div class="stat-card">
+                <div class="flex items-center justify-between">
+                    <span class="text-gray-300">Avg Session Length</span>
+                    <span id="avg-session-length" class="text-violet-300 font-bold">--</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="flex items-center justify-between">
+                    <span class="text-gray-300">Total Words</span>
+                    <span id="total-words-sidebar" class="text-blue-300 font-bold">--</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="flex items-center justify-between">
+                    <span class="text-gray-300">Sessions Count</span>
+                    <span id="sessions-count" class="text-green-300 font-bold">--</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div id="main-content" class="transition-all duration-300 ml-80 min-h-screen p-4 py-16 sm:py-20">
+        <!-- Top Bar -->
+        <div class="w-full max-w-6xl mx-auto mb-8">
+            <div class="glass-card rounded-2xl p-4 flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <button id="sidebar-open" class="p-2 rounded-lg hover:bg-white/10 transition-colors">
+                        <i data-feather="chevron-right" class="w-5 h-5"></i>
+                    </button>
+                    <h1 class="text-2xl font-bold text-white">Analytics Dashboard</h1>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Stats Cards -->
+        <div class="w-full max-w-6xl mx-auto mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="glass-card rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-3 bg-violet-500/20 rounded-lg">
+                            <i data-feather="activity" class="w-6 h-6 text-violet-400"></i>
+                        </div>
+                        <span class="text-sm text-gray-400">Total Sessions</span>
+                    </div>
+                    <div class="text-3xl font-bold text-white" id="total-sessions-analytics">0</div>
+                </div>
+                
+                <div class="glass-card rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-3 bg-blue-500/20 rounded-lg">
+                            <i data-feather="clock" class="w-6 h-6 text-blue-400"></i>
+                        </div>
+                        <span class="text-sm text-gray-400">Total Time</span>
+                    </div>
+                    <div class="text-3xl font-bold text-white" id="total-time">0h</div>
+                </div>
+                
+                <div class="glass-card rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-3 bg-green-500/20 rounded-lg">
+                            <i data-feather="type" class="w-6 h-6 text-green-400"></i>
+                        </div>
+                        <span class="text-sm text-gray-400">Total Words</span>
+                    </div>
+                    <div class="text-3xl font-bold text-white" id="total-words-main">0</div>
+                </div>
+                
+                <div class="glass-card rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-3 bg-orange-500/20 rounded-lg">
+                            <i data-feather="help-circle" class="w-6 h-6 text-orange-400"></i>
+                        </div>
+                        <span class="text-sm text-gray-400">Questions</span>
+                    </div>
+                    <div class="text-3xl font-bold text-white" id="total-questions">0</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Charts -->
+        <div class="w-full max-w-6xl mx-auto mb-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Session Duration Chart -->
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="text-xl font-semibold text-white mb-4">Session Durations</h3>
+                    <div class="relative h-64">
+                        <canvas id="durationChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Words Per Session Chart -->
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="text-xl font-semibold text-white mb-4">Words Per Session</h3>
+                    <div class="relative h-64">
+                        <canvas id="wordsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Detailed Analytics -->
+        <div class="w-full max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Session Overview -->
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="text-xl font-semibold text-white mb-4">Session Overview</h3>
+                    <div id="session-overview" class="space-y-3">
+                        <!-- Session data will be populated here -->
+                    </div>
+                </div>
+                
+                <!-- Quick Insights -->
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="text-xl font-semibold text-white mb-4">Insights</h3>
+                    <div id="insights-container" class="space-y-4">
+                        <!-- Real insights based on actual data -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    feather.replace();
+
+    // Apply saved theme on page load
+    applySavedTheme();
+
+    // Elements
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+    const sidebarClose = document.getElementById('sidebar-close');
+    const sidebarOpen = document.getElementById('sidebar-open');
+
+    let sidebarCollapsed = false;
+    let sessions = [];
+    const charts = {};
+
+    // Initialize
+    initializeAnalytics();
+
+    function initializeAnalytics() {
+        loadSessionData();
+        setupEventListeners();
+        updateAnalyticsStats();
+        initializeCharts();
+        generateInsights();
+        updateMainContentMargins();
+    }
+
+    function setupEventListeners() {
+        if (sidebarClose) sidebarClose.addEventListener('click', closeSidebar);
+        if (sidebarOpen) sidebarOpen.addEventListener('click', openSidebar);
+
+        // Navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const page = item.getAttribute('data-page');
+                if (page && page !== 'analytics.html') {
+                    window.location.href = page;
+                }
+            });
+        });
+    }
+
+    function loadSessionData() {
+        sessions = JSON.parse(localStorage.getItem('savedSessions') || '[]');
+    }
+
+    function updateAnalyticsStats() {
+        // Total Sessions
+        const totalSessionsEl = document.getElementById('total-sessions-analytics');
+        if (totalSessionsEl) totalSessionsEl.textContent = sessions.length;
+
+        // Total Time
+        const totalTime = sessions.reduce((sum, session) => sum + (session.duration || 0), 0);
+        const totalTimeEl = document.getElementById('total-time');
+        if (totalTimeEl) totalTimeEl.textContent = formatDuration(totalTime);
+
+        // Total Words
+        const totalWords = sessions.reduce((sum, session) => {
+            return sum + (session.originalText ? session.originalText.split(' ').length : 0);
+        }, 0);
+        const totalWordsMainEl = document.getElementById('total-words-main');
+        const totalWordsSidebarEl = document.getElementById('total-words-sidebar');
+        if (totalWordsMainEl) totalWordsMainEl.textContent = totalWords;
+        if (totalWordsSidebarEl) totalWordsSidebarEl.textContent = totalWords;
+
+        // Total Questions
+        const totalQuestions = sessions.reduce((sum, session) => {
+            return sum + (session.questions ? session.questions.length : 0);
+        }, 0);
+        const totalQuestionsEl = document.getElementById('total-questions');
+        if (totalQuestionsEl) totalQuestionsEl.textContent = totalQuestions;
+
+        // Sidebar stats
+        updateSidebarStats();
+    }
+
+    function updateSidebarStats() {
+        // Average session length
+        const avgLength = sessions.length > 0 ? 
+            sessions.reduce((sum, s) => sum + (s.duration || 0), 0) / sessions.length : 0;
+        const avgSessionLengthEl = document.getElementById('avg-session-length');
+        if (avgSessionLengthEl) avgSessionLengthEl.textContent = formatDuration(avgLength);
+
+        // Sessions count
+        const sessionsCountEl = document.getElementById('sessions-count');
+        if (sessionsCountEl) sessionsCountEl.textContent = sessions.length;
+    }
+
+    function formatDuration(ms) {
+        const hours = Math.floor(ms / 3600000);
+        const minutes = Math.floor((ms % 3600000) / 60000);
+        return hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+    }
+
+    function initializeCharts() {
+        initializeDurationChart();
+        initializeWordsChart();
+        updateSessionOverview();
+    }
+
+    function initializeDurationChart() {
+        const ctx = document.getElementById('durationChart');
+        if (!ctx) return;
+
+        const durations = sessions.map((session, index) => ({
+            session: `Session ${index + 1}`,
+            duration: Math.floor((session.duration || 0) / 60000) // Convert to minutes
+        }));
+
+        if (charts.duration) {
+            charts.duration.destroy();
+        }
+
+        charts.duration = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: durations.map(d => d.session),
+                datasets: [{
+                    label: 'Duration (minutes)',
+                    data: durations.map(d => d.duration),
+                    backgroundColor: 'rgba(139, 92, 246, 0.6)',
+                    borderColor: '#8b5cf6',
+                    borderWidth: 1,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#9ca3af'
+                        }
+                    },
+                    y: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#9ca3af'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function initializeWordsChart() {
+        const ctx = document.getElementById('wordsChart');
+        if (!ctx) return;
+
+        const wordsData = sessions.map((session, index) => ({
+            session: `Session ${index + 1}`,
+            words: session.originalText ? session.originalText.split(' ').length : 0
+        }));
+
+        if (charts.words) {
+            charts.words.destroy();
+        }
+
+        charts.words = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: wordsData.map(d => d.session),
+                datasets: [{
+                    label: 'Words Spoken',
+                    data: wordsData.map(d => d.words),
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    pointBackgroundColor: '#10b981',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#9ca3af'
+                        }
+                    },
+                    y: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#9ca3af'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function updateSessionOverview() {
+        const sessionOverviewEl = document.getElementById('session-overview');
+        if (!sessionOverviewEl) return;
+
+        sessionOverviewEl.innerHTML = '';
+
+        if (sessions.length === 0) {
+            sessionOverviewEl.innerHTML = '<div class="text-gray-400 text-center py-8">No sessions available</div>';
+            return;
+        }
+
+        sessions.slice(0, 5).forEach((session, index) => {
+            const duration = formatDuration(session.duration || 0);
+            const words = session.originalText ? session.originalText.split(' ').length : 0;
+            const questions = session.questions ? session.questions.length : 0;
+
+            const sessionElement = document.createElement('div');
+            sessionElement.className = 'flex items-center justify-between p-3 bg-black/20 rounded-lg';
+            sessionElement.innerHTML = `
+                <div>
+                    <div class="text-white font-medium">Session ${sessions.length - index}</div>
+                    <div class="text-sm text-gray-400">${duration} • ${words} words • ${questions} questions</div>
+                </div>
+                <div class="text-violet-300 text-sm">${session.id}</div>
+            `;
+            sessionOverviewEl.appendChild(sessionElement);
+        });
+    }
+
+    function generateInsights() {
+        const insightsContainer = document.getElementById('insights-container');
+        if (!insightsContainer) return;
+
+        const insights = [];
+
+        if (sessions.length === 0) {
+            insights.push({
+                icon: 'info',
+                title: 'No Data Available',
+                description: 'Start recording sessions to see analytics and insights.',
+                type: 'info'
+            });
+        } else {
+            // Average session length insight
+            const avgDuration = sessions.reduce((sum, s) => sum + (s.duration || 0), 0) / sessions.length;
+            const avgMinutes = Math.floor(avgDuration / 60000);
+            insights.push({
+                icon: 'clock',
+                title: 'Session Length',
+                description: `Your average session is ${avgMinutes} minutes long.`,
+                type: 'info'
+            });
+
+            // Word count insight
+            const totalWords = sessions.reduce((sum, session) => {
+                return sum + (session.originalText ? session.originalText.split(' ').length : 0);
+            }, 0);
+            const avgWords = Math.floor(totalWords / sessions.length);
+            insights.push({
+                icon: 'type',
+                title: 'Expression Level',
+                description: `You average ${avgWords} words per session.`,
+                type: 'info'
+            });
+
+            // Questions insight
+            const totalQuestions = sessions.reduce((sum, session) => {
+                return sum + (session.questions ? session.questions.length : 0);
+            }, 0);
+            const avgQuestions = Math.floor(totalQuestions / sessions.length);
+            insights.push({
+                icon: 'help-circle',
+                title: 'Reflection Depth',
+                description: `Average of ${avgQuestions} reflection questions per session.`,
+                type: 'info'
+            });
+
+            // Progress insight
+            if (sessions.length >= 3) {
+                insights.push({
+                    icon: 'trending-up',
+                    title: 'Progress Tracking',
+                    description: `You've completed ${sessions.length} sessions. Keep up the great work!`,
+                    type: 'success'
+                });
+            }
+        }
+
+        insightsContainer.innerHTML = '';
+        insights.forEach(insight => {
+            const insightElement = document.createElement('div');
+            insightElement.className = 'response-item';
+            insightElement.innerHTML = `
+                <div class="flex items-start space-x-3">
+                    <div class="p-2 bg-${insight.type === 'success' ? 'green' : insight.type === 'warning' ? 'yellow' : 'blue'}-500/20 rounded-lg">
+                        <i data-feather="${insight.icon}" class="w-4 h-4 text-${insight.type === 'success' ? 'green' : insight.type === 'warning' ? 'yellow' : 'blue'}-400"></i>
+                    </div>
+                    <div>
+                        <div class="text-sm font-medium text-white">${insight.title}</div>
+                        <div class="text-sm text-gray-300 mt-1">${insight.description}</div>
+                    </div>
+                </div>
+            `;
+            insightsContainer.appendChild(insightElement);
+        });
+
+        feather.replace();
+    }
+
+    // Theme Management
+    function applySavedTheme() {
+        const settings = JSON.parse(localStorage.getItem('therapyConnectSettings') || '{}');
+        if (settings.theme) {
+            applyTheme(settings.theme);
+        }
+    }
+
+    function applyTheme(theme) {
+        const root = document.documentElement;
+
+        switch (theme) {
+            case 'blue':
+                root.style.setProperty('--primary-gradient', 'linear-gradient(135deg, #3b82f6 0%, #1e40af 100%)');
+                root.style.setProperty('--secondary-gradient', 'linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)');
+                break;
+            case 'green':
+                root.style.setProperty('--primary-gradient', 'linear-gradient(135deg, #10b981 0%, #047857 100%)');
+                root.style.setProperty('--secondary-gradient', 'linear-gradient(135deg, #34d399 0%, #059669 100%)');
+                break;
+            default:
+                root.style.setProperty('--primary-gradient', 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)');
+                root.style.setProperty('--secondary-gradient', 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)');
+        }
+    }
+
+    // Sidebar controls
+    function closeSidebar() {
+        sidebarCollapsed = true;
+        sidebar.classList.add('sidebar-collapsed');
+        updateMainContentMargins();
+    }
+
+    function openSidebar() {
+        sidebarCollapsed = false;
+        sidebar.classList.remove('sidebar-collapsed');
+        updateMainContentMargins();
+    }
+
+    function updateMainContentMargins() {
+        const leftMargin = sidebarCollapsed ? '0' : '320px';
+        mainContent.style.marginLeft = leftMargin;
+    }
+
+    // Mobile responsiveness
+    function handleResize() {
+        if (window.innerWidth < 768) {
+            sidebarCollapsed = true;
+            sidebar.classList.add('sidebar-collapsed');
+            updateMainContentMargins();
+        }
+    }
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+});
+</script>
+</body>
+</html>

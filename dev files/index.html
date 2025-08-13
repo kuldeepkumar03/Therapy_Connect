@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Therapy Connect Pro - Advanced Session Analytics</title>
+    <link rel="stylesheet" href="assets\css\styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="aurora-background">
+        <div class="aurora-outer">
+            <div class="aurora-inner"></div>
+            <div class="aurora-inner"></div>
+            <div class="aurora-inner"></div>
+            <div class="aurora-inner"></div>
+            <div class="aurora-inner"></div>
+        </div>
+    </div>
+    
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar fixed left-0 top-0 h-full w-80 z-50 p-6">
+        <div class="flex items-center justify-between mb-8">
+            <h2 class="text-xl font-bold text-white">Session Control</h2>
+            <button id="sidebar-close" class="p-2 rounded-lg hover:bg-white/10 transition-colors">
+                <i data-feather="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+        
+        <!-- Navigation -->
+        <nav class="mb-8">
+            <div class="nav-item active" data-section="session" data-page="index.html">
+                <i data-feather="mic" class="w-5 h-5 mr-3"></i>
+                <span>Current Session</span>
+            </div>
+            <div class="nav-item" data-section="history" data-page="history.html">
+                <i data-feather="clock" class="w-5 h-5 mr-3"></i>
+                <span>Session History</span>
+            </div>
+            <div class="nav-item" data-section="analytics" data-page="analytics.html">
+                <i data-feather="bar-chart-2" class="w-5 h-5 mr-3"></i>
+                <span>Analytics</span>
+            </div>
+            <div class="nav-item" data-section="settings" data-page="settings.html">
+                <i data-feather="settings" class="w-5 h-5 mr-3"></i>
+                <span>Settings</span>
+            </div>
+        </nav>
+        
+        <!-- Session Stats -->
+        <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-white mb-4">Session Stats</h3>
+            
+            <div class="stat-card">
+                <div class="flex items-center justify-between">
+                    <span class="text-gray-300">Recording Time</span>
+                    <span id="recording-time" class="timer-display">00:00</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="flex items-center justify-between">
+                    <span class="text-gray-300">Processing Time</span>
+                    <span id="processing-time" class="timer-display">00:00</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="flex items-center justify-between">
+                    <span class="text-gray-300">Total Sessions</span>
+                    <span id="total-sessions" class="text-violet-300 font-bold">0</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="flex items-center justify-between">
+                    <span class="text-gray-300">Avg Response Time</span>
+                    <span id="avg-response-time" class="text-violet-300 font-bold">--</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="mt-8">
+            <h3 class="text-lg font-semibold text-white mb-4">Quick Actions</h3>
+            <div class="space-y-2">
+                <button id="export-data" class="w-full text-left p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors text-sm">
+                    <i data-feather="download" class="w-4 h-4 inline mr-2"></i>
+                    Export Session Data
+                </button>
+                <button id="share-summary" class="w-full text-left p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors text-sm">
+                    <i data-feather="share-2" class="w-4 h-4 inline mr-2"></i>
+                    Share Summary
+                </button>
+                <button id="clear-history" class="w-full text-left p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors text-sm">
+                    <i data-feather="trash-2" class="w-4 h-4 inline mr-2"></i>
+                    Clear History
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div id="main-content" class="transition-all duration-300 ml-80 mr-96 min-h-screen flex flex-col items-center p-4 py-16 sm:py-20">
+        <!-- Top Bar -->
+        <div class="w-full max-w-2xl mx-auto mb-8">
+            <div class="glass-card rounded-2xl p-4 flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <button id="sidebar-open" class="p-2 rounded-lg hover:bg-white/10 transition-colors">
+                        <i data-feather="chevron-right" class="w-5 h-5"></i>
+                    </button>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                        <span class="text-sm text-gray-300">System Online</span>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <div class="timer-display">
+                        <i data-feather="clock" class="w-4 h-4 inline mr-1"></i>
+                        <span id="session-timer">00:00:00</span>
+                    </div>
+                    <button id="response-sheet-toggle" class="p-2 rounded-lg hover:bg-white/10 transition-colors">
+                        <i data-feather="bar-chart" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="main-container" class="w-full max-w-2xl mx-auto">
+            
+            <!-- State 1: Recorder -->
+            <div id="recorder-state" class="glass-card rounded-3xl p-6 md:p-8 text-center">
+                <header class="mb-8">
+                    <h1 class="text-5xl font-bold title-gradient mb-4">Therapy Connect</h1>
+                    <p class="text-xl subtitle-gradient font-medium mb-4">Your space to be heard and understood.</p>
+                    <div class="flex items-center justify-center space-x-2 text-sm text-gray-400">
+                        <i data-feather="shield-check" class="w-4 h-4"></i>
+                        <span>Secure & Private</span>
+                        <span>•</span>
+                        <i data-feather="zap" class="w-4 h-4"></i>
+                        <span>AI-Powered Analysis</span>
+                    </div>
+                </header>
+                
+                <div class="mb-8">
+                    <p class="text-gray-300 mb-6 text-lg leading-relaxed">Hello User. When you're ready, press the button below to share what's on your mind.</p>
+                    
+                    <!-- Recording Visualization -->
+                    <div id="recording-viz" class="hidden mb-6">
+                        <div class="flex items-center justify-center space-x-2">
+                            <div class="w-2 h-8 bg-violet-400 rounded-full animate-pulse" style="animation-delay: 0ms;"></div>
+                            <div class="w-2 h-12 bg-violet-400 rounded-full animate-pulse" style="animation-delay: 100ms;"></div>
+                            <div class="w-2 h-6 bg-violet-400 rounded-full animate-pulse" style="animation-delay: 200ms;"></div>
+                            <div class="w-2 h-10 bg-violet-400 rounded-full animate-pulse" style="animation-delay: 300ms;"></div>
+                            <div class="w-2 h-4 bg-violet-400 rounded-full animate-pulse" style="animation-delay: 400ms;"></div>
+                            <div class="w-2 h-8 bg-violet-400 rounded-full animate-pulse" style="animation-delay: 500ms;"></div>
+                            <div class="w-2 h-12 bg-violet-400 rounded-full animate-pulse" style="animation-delay: 600ms;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="recordButton" class="record-button p-8 rounded-full shadow-2xl transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-violet-400/50 mx-auto flex items-center justify-center group relative">
+                    <i data-feather="mic" class="w-12 h-12 text-white transition-transform duration-300 group-hover:scale-110 relative z-10"></i>
+                </button>
+                
+                <p id="status" class="text-center text-base text-gray-400 h-6 mt-8 font-medium">Click to begin your session</p>
+            </div>
+
+            <!-- State 2: Loading -->
+            <div id="loading-state" class="glass-card rounded-3xl p-6 md:p-8 text-center hidden">
+                <div class="flex justify-center items-center mb-6">
+                    <div class="loading-spinner h-20 w-20"></div>
+                </div>
+                <h2 class="text-3xl font-semibold text-white mb-4">Analyzing Your Session</h2>
+                <p id="loading-status" class="text-violet-300 text-lg mb-6">Just a moment while we process your thoughts...</p>
+                
+                <!-- Progress Steps -->
+                <div class="flex items-center justify-center space-x-4 mb-6">
+                    <div class="flex items-center space-x-2">
+                        <div id="step-1" class="w-3 h-3 bg-violet-400 rounded-full"></div>
+                        <span class="text-sm text-gray-300">Transcribing</span>
+                    </div>
+                    <div class="w-8 h-px bg-gray-600"></div>
+                    <div class="flex items-center space-x-2">
+                        <div id="step-2" class="w-3 h-3 bg-gray-600 rounded-full"></div>
+                        <span class="text-sm text-gray-300">Analyzing</span>
+                    </div>
+                    <div class="w-8 h-px bg-gray-600"></div>
+                    <div class="flex items-center space-x-2">
+                        <div id="step-3" class="w-3 h-3 bg-gray-600 rounded-full"></div>
+                        <span class="text-sm text-gray-300">Generating</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- State 3: Q&A -->
+            <div id="qa-state" class="glass-card rounded-3xl p-6 md:p-8 hidden">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-semibold mb-4 text-white">Thank you for sharing</h2>
+                    <p class="text-violet-300 text-lg">To help me understand better, please rate the following aspects of your experience.</p>
+                </div>
+                
+                <div id="question-container" class="space-y-6 mb-8">
+                    <!-- Questions will be injected here -->
+                </div>
+                
+                <div class="text-center">
+                    <button id="submit-answers-button" class="primary-button px-10 py-4 text-white font-bold rounded-2xl text-lg relative overflow-hidden">
+                        <span class="relative z-10">Generate My Personalized Summary</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- State 4: Summary -->
+            <div id="summary-state" class="glass-card rounded-3xl p-6 md:p-8 hidden">
+                <div class="text-center mb-6">
+                    <h2 class="text-3xl font-semibold mb-4 text-white">A Moment of Reflection</h2>
+                    <p class="text-violet-300 text-lg">Here's your personalized insight based on our session together.</p>
+                </div>
+                
+                <div id="summary-text" class="prose prose-invert max-w-none bg-black/30 p-6 rounded-2xl text-gray-300 leading-relaxed text-lg border border-white/10 mb-6">
+                    <!-- Summary will be injected here -->
+                </div>
+                
+                <div class="flex space-x-4">
+                    <button id="restart-button" class="secondary-button flex-1 text-white font-bold py-3 px-4 rounded-xl text-base">
+                        <i data-feather="refresh-cw" class="w-4 h-4 inline mr-2"></i>
+                        Start New Session
+                    </button>
+                    <button id="save-session" class="primary-button flex-1 text-white font-bold py-3 px-4 rounded-xl text-base relative overflow-hidden">
+                        <span class="relative z-10">
+                            <i data-feather="save" class="w-4 h-4 inline mr-2"></i>
+                            Save Session
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Response Sheet -->
+    <div id="response-sheet" class="response-sheet fixed right-0 top-0 h-full w-96 z-50 p-6 overflow-y-auto response-sheet-collapsed">
+        <div class="flex items-center justify-between mb-8">
+            <h2 class="text-xl font-bold text-white">Response Analytics</h2>
+            <button id="response-sheet-close" class="p-2 rounded-lg hover:bg-white/10 transition-colors">
+                <i data-feather="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+        
+        <!-- Real-time Metrics -->
+        <div class="mb-8">
+            <h3 class="text-lg font-semibold text-white mb-4">Real-time Metrics</h3>
+            <div class="space-y-4">
+                <div class="stat-card">
+                    <div class="text-sm text-gray-400 mb-1">Current Session</div>
+                    <div class="text-2xl font-bold text-violet-300" id="current-session-time">00:00</div>
+                </div>
+                <div class="stat-card">
+                    <div class="text-sm text-gray-400 mb-1">Words Spoken</div>
+                    <div class="text-2xl font-bold text-blue-300" id="words-count">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="text-sm text-gray-400 mb-1">Sentiment Score</div>
+                    <div class="text-2xl font-bold text-green-300" id="sentiment-score">--</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Response History -->
+        <div class="mb-8">
+            <h3 class="text-lg font-semibold text-white mb-4">Response History</h3>
+            <div id="response-history" class="space-y-3">
+                <div class="response-item">
+                    <div class="text-sm text-gray-400">No previous responses</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Session Chart -->
+        <div class="mb-8">
+            <h3 class="text-lg font-semibold text-white mb-4">Session Trends</h3>
+            <div class="stat-card">
+                <div class="relative h-48">
+                    <canvas id="sessionChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Insights -->
+        <div>
+            <h3 class="text-lg font-semibold text-white mb-4">Quick Insights</h3>
+            <div id="quick-insights" class="space-y-3">
+                <div class="response-item">
+                    <div class="text-sm text-violet-300 font-medium">💡 Tip</div>
+                    <div class="text-sm text-gray-300 mt-1">Speak naturally and take your time. There's no rush.</div>
+                </div>
+                <div class="response-item">
+                    <div class="text-sm text-blue-300 font-medium">📊 Insight</div>
+                    <div class="text-sm text-gray-300 mt-1">Your session data is processed locally and securely.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    feather.replace();
+    
+    // Apply saved theme on page load
+    applySavedTheme();
+    
+    // Elements
+    const mainContainer = document.getElementById('main-container');
+    const recorderState = document.getElementById('recorder-state');
+    const loadingState = document.getElementById('loading-state');
+    const qaState = document.getElementById('qa-state');
+    const summaryState = document.getElementById('summary-state');
+    
+    const recordButton = document.getElementById('recordButton');
+    const statusDiv = document.getElementById('status');
+    const loadingStatusDiv = document.getElementById('loading-status');
+    const questionContainer = document.getElementById('question-container');
+    const submitAnswersButton = document.getElementById('submit-answers-button');
+    const summaryText = document.getElementById('summary-text');
+    const restartButton = document.getElementById('restart-button');
+    
+    // Sidebar and Response Sheet
+    const sidebar = document.getElementById('sidebar');
+    const responseSheet = document.getElementById('response-sheet');
+    const mainContent = document.getElementById('main-content');
+    const sidebarClose = document.getElementById('sidebar-close');
+    const sidebarOpen = document.getElementById('sidebar-open');
+    const responseSheetToggle = document.getElementById('response-sheet-toggle');
+    const responseSheetClose = document.getElementById('response-sheet-close');
+    
+    // Timer elements
+    const recordingTimeEl = document.getElementById('recording-time');
+    const processingTimeEl = document.getElementById('processing-time');
+    const sessionTimerEl = document.getElementById('session-timer');
+    const currentSessionTimeEl = document.getElementById('current-session-time');
+    
+    // Variables
+    let mediaRecorder;
+    let audioChunks = [];
+    let isRecording = false;
+    let sessionData = {};
+    let recordingStartTime = 0;
+    let processingStartTime = 0;
+    let sessionStartTime = Date.now();
+    let recordingTimer = null;
+    let processingTimer = null;
+    let sessionTimer = null;
+    let sidebarCollapsed = false;
+    let responseSheetCollapsed = true;
+    
+    // Initialize
+    initializeApp();
+    
+    function initializeApp() {
+    localStorage.removeItem('totalSessions');
+    localStorage.removeItem('avgResponseTime');
+        startSessionTimer();
+        initializeChart();
+        loadSessionStats();
+        setupNavigation();
+        
+        // Set initial state
+        updateMainContentMargins();
+    }
+    
+    function startSessionTimer() {
+        sessionTimer = setInterval(() => {
+            const elapsed = Date.now() - sessionStartTime;
+            const formatted = formatTime(elapsed);
+            sessionTimerEl.textContent = formatted;
+            if (currentSessionTimeEl) {
+                currentSessionTimeEl.textContent = formatTime(elapsed, false);
+            }
+        }, 1000);
+    }
+    
+    function formatTime(ms, includeHours = true) {
+        const totalSeconds = Math.floor(ms / 1000);
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        
+        if (includeHours) {
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        } else {
+            return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+    }
+    
+    function updateRecordingTimer() {
+        if (isRecording) {
+            const elapsed = Date.now() - recordingStartTime;
+            recordingTimeEl.textContent = formatTime(elapsed, false);
+        }
+    }
+    
+    function updateProcessingTimer() {
+        const elapsed = Date.now() - processingStartTime;
+        processingTimeEl.textContent = formatTime(elapsed, false);
+    }
+    
+    // Sidebar and Response Sheet Controls
+    if (sidebarClose) sidebarClose.addEventListener('click', closeSidebar);
+    if (sidebarOpen) sidebarOpen.addEventListener('click', openSidebar);
+    if (responseSheetToggle) responseSheetToggle.addEventListener('click', toggleResponseSheet);
+    if (responseSheetClose) responseSheetClose.addEventListener('click', closeResponseSheet);
+    
+    function closeSidebar() {
+        sidebarCollapsed = true;
+        sidebar.classList.add('sidebar-collapsed');
+        updateMainContentMargins();
+    }
+
+    function openSidebar() {
+        sidebarCollapsed = false;
+        sidebar.classList.remove('sidebar-collapsed');
+        updateMainContentMargins();
+    }
+    
+    function toggleResponseSheet() {
+        responseSheetCollapsed = !responseSheetCollapsed;
+        if (responseSheetCollapsed) {
+            responseSheet.classList.add('response-sheet-collapsed');
+        } else {
+            responseSheet.classList.remove('response-sheet-collapsed');
+        }
+        updateMainContentMargins();
+    }
+    
+    function closeResponseSheet() {
+        responseSheetCollapsed = true;
+        responseSheet.classList.add('response-sheet-collapsed');
+        updateMainContentMargins();
+    }
+    
+    function updateMainContentMargins() {
+        const leftMargin = sidebarCollapsed ? '0' : '320px';
+        const rightMargin = responseSheetCollapsed ? '0' : '384px';
+        mainContent.style.marginLeft = leftMargin;
+        mainContent.style.marginRight = rightMargin;
+    }
+    
+    // Navigation - Fixed to work properly
+    function setupNavigation() {
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const page = item.getAttribute('data-page');
+                if (page && page !== 'index.html') {
+                    window.location.href = page;
+                }
+            });
+        });
+    }
+    
+    function showState(stateToShow) {
+        const states = [recorderState, loadingState, qaState, summaryState];
+        
+        const currentState = states.find(s => !s.classList.contains('hidden'));
+        if (currentState && currentState !== stateToShow) {
+            currentState.classList.add('fade-out');
+            setTimeout(() => {
+                currentState.classList.add('hidden');
+                currentState.classList.remove('fade-out');
+                
+                stateToShow.classList.remove('hidden');
+                stateToShow.classList.add('fade-in');
+            }, 500);
+        } else {
+            states.forEach(s => s.classList.add('hidden'));
+            stateToShow.classList.remove('hidden');
+            stateToShow.classList.add('fade-in');
+        }
+    }
+
+    async function startRecording() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+            mediaRecorder.ondataavailable = event => audioChunks.push(event.data);
+            mediaRecorder.onstop = handleRecordingStop;
+            mediaRecorder.start();
+            isRecording = true;
+            recordingStartTime = Date.now();
+            updateUIAfterRecordingStart();
+            
+            // Start recording timer
+            recordingTimer = setInterval(updateRecordingTimer, 100);
+        } catch (err) {
+            console.error('Microphone error:', err);
+            statusDiv.textContent = "Microphone access denied. Please allow microphone access and try again.";
+            showNotification("Microphone access denied", "error");
+        }
+    }
+
+    function stopRecording() {
+        if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+            mediaRecorder.stop();
+        }
+        isRecording = false;
+        if (recordingTimer) {
+            clearInterval(recordingTimer);
+            recordingTimer = null;
+        }
+        updateUIAfterRecordingStop();
+    }
+    
+    function updateUIAfterRecordingStart() {
+        recordButton.classList.add('recording');
+        recordButton.querySelector('i').classList.add('animate-pulse');
+        const recordingViz = document.getElementById('recording-viz');
+        if (recordingViz) recordingViz.classList.remove('hidden');
+        statusDiv.textContent = "Recording in progress... Click to stop.";
+    }
+
+    function updateUIAfterRecordingStop() {
+        recordButton.classList.remove('recording');
+        recordButton.querySelector('i').classList.remove('animate-pulse');
+        const recordingViz = document.getElementById('recording-viz');
+        if (recordingViz) recordingViz.classList.add('hidden');
+        statusDiv.textContent = "Processing your recording...";
+    }
+
+    async function handleRecordingStop() {
+        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+        const formData = new FormData();
+        formData.append("file", audioBlob, "recording.webm");
+
+        showState(loadingState);
+        processingStartTime = Date.now();
+        
+        // Start processing timer
+        const processingTimerInterval = setInterval(updateProcessingTimer, 100);
+        
+        // Update progress steps
+        updateProgressStep(1, true);
+        loadingStatusDiv.textContent = "Transcribing your audio...";
+
+        try {
+            const response = await fetch("http://127.0.0.1:8000/start_session", {
+                method: "POST", body: formData,
+            });
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.detail || "Failed to start session.");
+            }
+            
+            updateProgressStep(2, true);
+            loadingStatusDiv.textContent = "Analyzing your thoughts...";
+            
+            sessionData = await response.json();
+            
+            updateProgressStep(3, true);
+            loadingStatusDiv.textContent = "Generating personalized questions...";
+            
+            // Update word count
+            const wordCount = sessionData.original_text ? sessionData.original_text.split(' ').length : 0;
+            const wordsCountEl = document.getElementById('words-count');
+            if (wordsCountEl) wordsCountEl.textContent = wordCount;
+            
+            setTimeout(() => {
+                clearInterval(processingTimerInterval);
+                displayQuestions(sessionData.questions);
+                showState(qaState);
+                addResponseToHistory('Questions Generated', 'success');
+                showNotification('Questions generated successfully!', 'success');
+            }, 1000);
+            
+        } catch (error) {
+            clearInterval(processingTimerInterval);
+            console.error("Error starting session:", error);
+            statusDiv.textContent = `Error: ${error.message}`;
+            showState(recorderState);
+            addResponseToHistory('Session Failed', 'error');
+            showNotification('Session failed. Please try again.', 'error');
+        }
+    }
+    
+    function updateProgressStep(step, active) {
+        const stepEl = document.getElementById(`step-${step}`);
+        if (stepEl) {
+            if (active) {
+                stepEl.classList.remove('bg-gray-600');
+                stepEl.classList.add('bg-violet-400');
+            }
+        }
+    }
+
+    if (recordButton) {
+        recordButton.addEventListener('click', () => {
+            if (isRecording) {
+                stopRecording();
+            } else {
+                startRecording();
+            }
+        });
+    }
+
+    function displayQuestions(questions) {
+        questionContainer.innerHTML = '';
+        questions.forEach((q, index) => {
+            const questionElement = document.createElement('div');
+            questionElement.className = 'question-item fade-in';
+            questionElement.style.animationDelay = `${index * 150}ms`;
+            questionElement.innerHTML = `
+                <label for="question-${index}" class="block text-lg font-medium text-gray-200 mb-6">${q}</label>
+                <div class="flex items-center gap-6">
+                    <span class="text-sm text-gray-400 w-12">Low</span>
+                    <input type="range" id="question-${index}" name="question-${index}" min="1" max="10" value="5" class="flex-1">
+                    <span class="text-sm text-gray-400 w-12">High</span>
+                    <div class="text-center text-2xl font-bold text-violet-300 w-12 h-12 flex items-center justify-center bg-violet-500/20 rounded-full border border-violet-400/30">
+                        <span id="q-val-${index}">5</span>
+                    </div>
+                </div>
+            `;
+            questionContainer.appendChild(questionElement);
+            
+            const slider = document.getElementById(`question-${index}`);
+            const valueDisplay = document.getElementById(`q-val-${index}`);
+            
+            slider.addEventListener('input', (e) => {
+                valueDisplay.textContent = e.target.value;
+                const percentage = ((e.target.value - 1) / 9) * 100;
+                e.target.style.background = `linear-gradient(to right, rgba(139, 92, 246, 0.6) 0%, rgba(139, 92, 246, 0.8) ${percentage}%, rgba(255, 255, 255, 0.2) ${percentage}%)`;
+            });
+            
+            // Initialize slider background
+            const percentage = ((5 - 1) / 9) * 100;
+            slider.style.background = `linear-gradient(to right, rgba(139, 92, 246, 0.6) 0%, rgba(139, 92, 246, 0.8) ${percentage}%, rgba(255, 255, 255, 0.2) ${percentage}%)`;
+        });
+    }
+
+    if (submitAnswersButton) {
+        submitAnswersButton.addEventListener('click', async () => {
+            const answers = sessionData.questions.map((q, index) => {
+                return { question: q, answer: document.getElementById(`question-${index}`).value };
+            });
+            
+            showState(loadingState);
+            processingStartTime = Date.now();
+            const processingTimerInterval = setInterval(updateProcessingTimer, 100);
+            
+            updateProgressStep(1, true);
+            updateProgressStep(2, true);
+            updateProgressStep(3, true);
+            loadingStatusDiv.textContent = "Generating your personalized summary...";
+
+            const payload = { original_text: sessionData.original_text, answers: answers };
+
+            try {
+                const response = await fetch("http://127.0.0.1:8000/get_summary", {
+                    method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+                });
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || "Failed to get summary.");
+                }
+                
+                const result = await response.json();
+                clearInterval(processingTimerInterval);
+                summaryText.innerHTML = result.summary.replace(/\n/g, '<p class="my-4"></p>');
+                showState(summaryState);
+                addResponseToHistory('Summary Generated', 'success');
+                updateSessionStats();
+                showNotification('Summary generated successfully!', 'success');
+            } catch (error) {
+                clearInterval(processingTimerInterval);
+                console.error("Error getting summary:", error);
+                statusDiv.textContent = `Error: ${error.message}`;
+                showState(recorderState);
+                addResponseToHistory('Summary Failed', 'error');
+                showNotification('Failed to generate summary. Please try again.', 'error');
+            }
+        });
+    }
+
+    if (restartButton) {
+        restartButton.addEventListener('click', () => {
+            sessionData = {};
+            statusDiv.textContent = "Click to begin your session";
+            
+            // Reset timers
+            recordingTimeEl.textContent = '00:00';
+            processingTimeEl.textContent = '00:00';
+            
+            // Reset progress steps
+            for (let i = 1; i <= 3; i++) {
+                const stepEl = document.getElementById(`step-${i}`);
+                if (stepEl) {
+                    stepEl.classList.remove('bg-violet-400');
+                    stepEl.classList.add('bg-gray-600');
+                }
+            }
+            
+            showState(recorderState);
+            addResponseToHistory('New Session Started', 'info');
+            showNotification('New session started', 'info');
+        });
+    }
+    
+    // Response History Functions
+    function addResponseToHistory(message, type) {
+        const historyContainer = document.getElementById('response-history');
+        if (!historyContainer) return;
+
+        const responseItem = document.createElement('div');
+        responseItem.className = 'response-item fade-in';
+        
+        const typeColors = {
+            success: 'text-green-300',
+            error: 'text-red-300',
+            info: 'text-blue-300'
+        };
+        
+        responseItem.innerHTML = `
+            <div class="flex items-center justify-between">
+                <div class="text-sm ${typeColors[type]} font-medium">${message}</div>
+            </div>
+        `;
+        
+        if (historyContainer.children.length > 0 && historyContainer.children[0].textContent.includes('No previous responses')) {
+            historyContainer.innerHTML = '';
+        }
+        
+        historyContainer.insertBefore(responseItem, historyContainer.firstChild);
+        
+        // Keep only last 10 responses
+        while (historyContainer.children.length > 10) {
+            historyContainer.removeChild(historyContainer.lastChild);
+        }
+    }
+    
+    // Session Stats Functions
+    function loadSessionStats() {
+        const totalSessions = localStorage.getItem('totalSessions') || 0;
+        const avgResponseTime = localStorage.getItem('avgResponseTime') || '--';
+        
+        const totalSessionsEl = document.getElementById('total-sessions');
+        const avgResponseTimeEl = document.getElementById('avg-response-time');
+        
+        if (totalSessionsEl) totalSessionsEl.textContent = totalSessions;
+        if (avgResponseTimeEl) avgResponseTimeEl.textContent = avgResponseTime;
+    }
+    
+    function updateSessionStats() {
+        const totalSessions = parseInt(localStorage.getItem('totalSessions') || 0) + 1;
+        localStorage.setItem('totalSessions', totalSessions);
+        
+        const totalSessionsEl = document.getElementById('total-sessions');
+        if (totalSessionsEl) totalSessionsEl.textContent = totalSessions;
+        
+        // Calculate average response time (simplified)
+        const currentResponseTime = Date.now() - sessionStartTime;
+        const avgResponseTime = Math.floor(currentResponseTime / 1000) + 's';
+        localStorage.setItem('avgResponseTime', avgResponseTime);
+        
+        const avgResponseTimeEl = document.getElementById('avg-response-time');
+        if (avgResponseTimeEl) avgResponseTimeEl.textContent = avgResponseTime;
+    }
+    
+    // Chart Initialization
+    function initializeChart() {
+        const ctx = document.getElementById('sessionChart');
+        if (!ctx) return;
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Session 1', 'Session 2', 'Session 3', 'Session 4', 'Session 5'],
+                datasets: [{
+                    label: 'Sessions',
+                    data: [2, 1, 3, 2, 4],
+                    borderColor: '#8b5cf6',
+                    backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#9ca3af'
+                        }
+                    },
+                    y: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#9ca3af'
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    // Save Session Function
+    const saveSessionBtn = document.getElementById('save-session');
+    if (saveSessionBtn) {
+        saveSessionBtn.addEventListener('click', () => {
+            const sessionToSave = {
+                id: Date.now(),
+                summary: summaryText.innerHTML,
+                questions: sessionData.questions,
+                originalText: sessionData.original_text,
+                duration: Date.now() - sessionStartTime
+            };
+            
+            const savedSessions = JSON.parse(localStorage.getItem('savedSessions') || '[]');
+            savedSessions.push(sessionToSave);
+            localStorage.setItem('savedSessions', JSON.stringify(savedSessions));
+            
+            addResponseToHistory('Session Saved', 'success');
+            showNotification('Session saved successfully!', 'success');
+        });
+    }
+    
+    // Quick Actions
+    const exportDataBtn = document.getElementById('export-data');
+    if (exportDataBtn) {
+        exportDataBtn.addEventListener('click', exportSessionData);
+    }
+    
+    const clearHistoryBtn = document.getElementById('clear-history');
+    if (clearHistoryBtn) {
+        clearHistoryBtn.addEventListener('click', clearSessionHistory);
+    }
+    
+    function exportSessionData() {
+        const sessions = JSON.parse(localStorage.getItem('savedSessions') || '[]');
+        const dataStr = JSON.stringify(sessions, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(dataBlob);
+        link.download = `therapy-connect-sessions.json`;
+        link.click();
+        
+        showNotification('Session data exported successfully!', 'success');
+    }
+    
+    function clearSessionHistory() {
+        if (confirm('Are you sure you want to clear all session history? This action cannot be undone.')) {
+            localStorage.removeItem('savedSessions');
+            localStorage.removeItem('totalSessions');
+            localStorage.removeItem('avgResponseTime');
+            
+            // Reset UI
+            loadSessionStats();
+            const historyContainer = document.getElementById('response-history');
+            if (historyContainer) {
+                historyContainer.innerHTML = '<div class="response-item"><div class="text-sm text-gray-400">No previous responses</div></div>';
+            }
+            
+            showNotification('Session history cleared', 'info');
+        }
+    }
+    
+    // Theme Management
+    function applySavedTheme() {
+        const settings = JSON.parse(localStorage.getItem('therapyConnectSettings') || '{}');
+        if (settings.theme) {
+            applyTheme(settings.theme);
+        }
+    }
+
+    function applyTheme(theme) {
+        const root = document.documentElement;
+
+        switch (theme) {
+            case 'blue':
+                root.style.setProperty('--primary-gradient', 'linear-gradient(135deg, #3b82f6 0%, #1e40af 100%)');
+                root.style.setProperty('--secondary-gradient', 'linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)');
+                break;
+            case 'green':
+                root.style.setProperty('--primary-gradient', 'linear-gradient(135deg, #10b981 0%, #047857 100%)');
+                root.style.setProperty('--secondary-gradient', 'linear-gradient(135deg, #34d399 0%, #059669 100%)');
+                break;
+            default:
+                root.style.setProperty('--primary-gradient', 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)');
+                root.style.setProperty('--secondary-gradient', 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)');
+        }
+    }
+    
+    // Notification System
+    function showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+            <div class="flex items-center">
+                <i data-feather="${type === 'success' ? 'check-circle' : type === 'error' ? 'x-circle' : 'info'}" class="w-5 h-5 mr-3"></i>
+                <span>${message}</span>
+            </div>
+        `;
+        
+        document.body.appendChild(notification);
+        feather.replace();
+        
+        setTimeout(() => notification.classList.add('show'), 100);
+        
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => document.body.removeChild(notification), 300);
+        }, 3000);
+    }
+    
+    // Mobile responsiveness
+    function handleResize() {
+        if (window.innerWidth < 768) {
+            sidebarCollapsed = true;
+            responseSheetCollapsed = true;
+            sidebar.classList.add('sidebar-collapsed');
+            if (responseSheet) responseSheet.classList.add('response-sheet-collapsed');
+            updateMainContentMargins();
+        }
+    }
+    
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Initial check
+});
+</script>
+</body>
+</html>

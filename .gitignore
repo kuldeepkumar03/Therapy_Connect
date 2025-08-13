@@ -1,0 +1,5 @@
+# Ignore large files and sensitive data 
+models/ 
+data/ 
+services/__pycache__/ 
+.env 
